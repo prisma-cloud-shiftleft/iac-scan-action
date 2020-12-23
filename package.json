@@ -1,0 +1,49 @@
+{
+  "name": "iac-scan-action",
+  "version": "1.0.0",
+  "description": "A GitHub Action which runs Prisma Cloud IaC Scan on the repository.",
+  "main": "index.js",
+  "scripts": {
+    "build": "ncc build index.js -o dist -m",
+    "lint": "eslint .",
+    "clean": "rm -rf node_modules dist package-lock.json"
+  },
+  "author": "Yatindra A Padmanabha <ypadmanabha@paloaltonetworks.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prisma-cloud-shiftleft/iac-scan-action.git"
+  },
+  "bugs": {
+    "url": "https://github.com/prisma-cloud-shiftleft/iac-scan-action/issues"
+  },
+  "homepage": "https://github.com/prisma-cloud-shiftleft/iac-scan-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
+    "@actions/http-client": "^1.0.9",
+    "csv-writer": "^1.6.0",
+    "js-yaml": "^3.14.1",
+    "jwt-decode": "^3.1.1",
+    "markdown-table": "^2.0.0",
+    "zip-a-folder": "^0.0.12"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.25.1",
+    "eslint": "^7.13.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  },
+  "keywords": [
+    "GitHub",
+    "Actions",
+    "JavaScript",
+    "PrismaCloud",
+    "IaC",
+    "Infrastructure-as-Code",
+    "scan",
+    "terraform",
+    "cloudformation",
+    "kubernetes"
+  ]
+}

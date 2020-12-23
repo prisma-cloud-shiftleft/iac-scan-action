@@ -1,0 +1,133 @@
+name: 'Prisma Cloud IaC Scan'
+description: 'Scan you IaC templates for security issues'
+author: 'Yatindra AP'
+branding:
+  icon: 'shield'
+  color: 'orange'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+inputs:
+  github_token:
+    required: false
+    default: ${{ github.token }}
+    description: |-
+      The GitHub Token. Required if any of the 'create*' options are turned on
+      You can choose to use a different token than the pipeline default `GITHUB_TOKEN`.
+      Eg: secrets.GITHUB_TOKEN
+  create_issue:
+    required: true
+    default: 'false'
+    description: |-
+      If turned on an Issue will be created with the scan report.
+      Note: Only created on scan failure.
+  create_pull_request_check:
+    required: true
+    default: 'false'
+    description: If turned on a Check on Pull Request will be created with the scan report
+  create_pull_request_comment:
+    required: true
+    default: 'false'
+    description: If turned on a Comment on the Pull Request will be created with the scan report
+  prisma_api_url:
+    required: true
+    description: |-
+      The URL for Prisma Cloud varies depending on the region and cluster on which your tenant is deployed.
+      The tenant provisioned for you is, for example, https://app2.prismacloud.io or https://app.eu.prismacloud.io.
+      Replace 'app' in the URL with 'api' and enter it here.
+      Refer to the Prisma Cloud REST API Reference (https://api.docs.prismacloud.io/reference#try-the-apis) for more details.
+  access_key:
+    required: true
+    description: |-
+      The access key enables programmatic access.
+      If you do not have a key, refer to Create and Manage Access Keys (https://docs.paloaltonetworks.com/prisma/prisma-cloud/prisma-cloud-admin/manage-prisma-cloud-administrators/create-access-keys.html) to acquire one.
+      We recommend the actual value to be stored as a GitHub Secret and used here in the Action with secrets.PRISMA_CLOUD_ACCESS_KEY
+  secret_key:
+    required: true
+    description: |-
+      The secret key is provided to you at the time of Access Key generation.
+      You cannot view it on the Prisma Cloud web interface.
+      We recommend the actual value to be stored as a GitHub Secret and used here in the Action with secrets.PRISMA_CLOUD_SECRET_KEY
+  asset_name:
+    required: true
+    description: |-
+      Can be a project name or any identifier you want to attach to the scan.
+      Some examples are a CI/CD project name or a Git repository name.
+      Eg: 'my-repo-name'
+  tags:
+    required: false
+    description: |-
+      Prisma Cloud tags are different from cloud tags that you might have included in your IaC templates.
+      Prisma Cloud tags will facilitate use of upcoming Prisma Cloud features like role-based access control and policy selection.
+      Eg: 'owner:johndoe,team:creditapp,env:dev'
+  failure_criteria:
+    required: false
+    default: 'High:1,Medium:1,Low:1,Operator:or'
+    description: |-
+      Enables you to evaluate scan results against set failure criteria to obtain failed or passed verdicts.
+      You can set the count for high, medium, and low severity issues and use 'and'/'or' operators to refine your criteria.
+      The IaC scan API checks each severity violation number separately against scan results and applies the operator to each evaluation.
+      The scan triggers a failure if the number of violations is greater than or equal to the failureCriteria values.
+      The Pipeline will be set the Failed if the failure criteria matches.
+  scan_path:
+    required: false
+    default: './'
+    description: |-
+      Path of the directory containing the IaC files.
+      The path is relative to the repository root.
+  template_type:
+    required: true
+    description: |-
+      Specify the template type.
+      Valid values are as follows:
+        'TF' for Terraform
+        'CFT' for AWS CloudFormation
+        'K8S' for Kubernetes
+  template_version:
+    required: false
+    description: |-
+      Specify the template version.
+      Valid values are: '0.11', '0.12' and '0.13'
+      Note: Only used for 'TF' templateType.
+  variables:
+    required: false
+    description: |-
+      Template variables in comma separate key:value pairs.
+      Eg: 'k1:v1,k2:v2'
+  variable_files:
+    required: false
+    description: |-
+      Comma separated list of variable file paths.
+      Paths are relative to the repository root.
+      Eg: './var1.json,./var2.json'
+  result_path:
+    required: false
+    default: './prismacloud_iac'
+    description: |-
+      The directory relative to the workspace where scan result files will be stored
+  ignore_ssl:
+    required: false
+    default: 'false'
+    description: |-
+      Should internal API client ignore SSL errors.
+      Useful when using on GitHub Enterprise On-Prem behind SSL intercepting firewalls.
+outputs:
+  iac_scan_result:
+    description: |- 
+      Overall result of the scan.
+      Can be one of:
+        1. passed - When either no issues were found or the Failure Criteria threshold was not reached
+        2. failed - When issues were found and the Failure Criteria threshold for was reached
+        3. error - When there was a scan execution error, generally due to misconfiguration or invalid templates
+  iac_scan_result_summary:
+    description: Summary describing the result of the scan
+  iac_scan_result_path:
+    description: Path for the directory where result files should be written
+  iac_scan_result_issues_csv_path:
+    description: Path for the detailed Issue result CSV file
+  iac_scan_result_errors_csv_path:
+    description: Path for the detailed Error result CSV file
+  iac_scan_result_sarif_path:
+    description: Path for the detailed result SARIF Log file
+  iac_scan_result_md_path:
+    description: Path for the detailed result Markdown file
