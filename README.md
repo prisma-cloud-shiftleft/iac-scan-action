@@ -22,7 +22,7 @@ Refer to [Encrypted secrets](https://docs.github.com/en/free-pro-team@latest/act
 
 Configure your workflow based on the following example.
 
-Note: `actions/checkout` step is required to be run before the scan action, otherwise the action has not input file to scan.
+Note: `actions/checkout` step is required to be run before the scan action, otherwise the action does not have access to the CFT files to be scanned.
 
 ```yaml
 name: Prisma Cloud IaC Scan Example
