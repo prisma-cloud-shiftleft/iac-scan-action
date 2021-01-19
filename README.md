@@ -14,7 +14,7 @@ If you do not have a key, refer to [Create and Manage Access Keys](https://docs.
 
 #### Step 2: Create GitHub secrets from the API credentials
 
-Create GitHub Secrets called "PRISMA_CLOUD_ACCESS_KEY" and "PRISMA_CLOUD_SECRET_KEY" for the Access Key and Secret Key respectively with the values acquired in Step 1.
+Create GitHub Secrets called `PRISMA_CLOUD_ACCESS_KEY` and `PRISMA_CLOUD_SECRET_KEY` for the Access Key and Secret Key respectively with the values acquired in Step 1.
 
 Refer to [Encrypted secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets) for more details on how to setup secrets.
 
@@ -59,23 +59,23 @@ jobs:
 
 | Config Key                                                             | Description |
 | ---------------------------------------------------------------------- | ----------- |
-| prisma_api_url<br />*Required*                                         | The URL for Prisma Cloud varies depending on the region and cluster on which your tenant is deployed.<br />The tenant provisioned for you is, for example, https://app2.prismacloud.io or https://app.eu.prismacloud.io.<br />Replace **app** in the URL with **api** and enter it here. Refer to the [Prisma Cloud REST API Reference](https://api.docs.prismacloud.io/reference#try-the-apis) for more details. |
-| access_key<br />*Required*                                             | The access key enables programmatic access.<br />If you do not have a key, refer to [Create and Manage Access Keys](https://docs.paloaltonetworks.com/prisma/prisma-cloud/prisma-cloud-admin/manage-prisma-cloud-administrators/create-access-keys.html) to acquire one.<br />We recommend the actual value to be stored as a GitHub Secret and used here in the Action with `${{ secrets.PRISMA_CLOUD_ACCESS_KEY }}` |
+| prisma_api_url<br />*Required*                                         | The URL for Prisma Cloud varies depending on the region and cluster on which your tenant is deployed.<br />If your tenant is, for example, https://app2.prismacloud.io or https://app.eu.prismacloud.io then replace **app** in the URL with **api** and enter it here. Refer to the [Prisma Cloud REST API Reference](https://api.docs.prismacloud.io/reference#try-the-apis) for more details. |
+| access_key<br />*Required*                                             | Refer to [Create and Manage Access Keys](https://docs.paloaltonetworks.com/prisma/prisma-cloud/prisma-cloud-admin/manage-prisma-cloud-administrators/create-access-keys.html) to acquire Acccess and Secret keys.<br />We recommend the actual value to be stored as a GitHub Secret and used here in the Action with `${{ secrets.PRISMA_CLOUD_ACCESS_KEY }}` |
 | secret_key<br />*Required*                                             | The secret key is provided to you at the time of Access Key generation.<br />You cannot acquire it post generation.<br />We recommend the actual value to be stored as a GitHub Secret and used here in the Action with `${{ secrets.PRISMA_CLOUD_SECRET_KEY }}` |
-| asset_name<br />*Required*                                             | Can be a project name or any identifier you want to attach to the scan.<br />Some examples are a CI/CD project name or a Git repository name.<br />Eg: `'my-repo-name'` |
-| template_type<br />*Required*                                          | Specify the template type.<br />Valid values are as follows:<br />`'TF'` for Terraform<br />`'CFT'` for AWS CloudFormation<br />`'K8S'` for Kubernetes |
-| template_version                                                       | Specify the template version.<br />Valid values are: `'0.11'`, `'0.12'` and `'0.13'`<br />Note: Only used for 'TF' templateType. |
-| tags                                                                   | Prisma Cloud tags are different from cloud tags that you might have included in your IaC templates.<br />Prisma Cloud tags will facilitate use of upcoming Prisma Cloud features like role-based access control and policy selection.<br />Eg: `'owner:johndoe,team:creditapp,env:dev'` |
-| failure_criteria<br />Default: `'High:1,Medium:1,Low:1,Operator:or'`   | Enables you to evaluate scan results against set failure criteria to obtain failed or passed verdicts. You can set the count for high, medium, and low severity issues and use 'and'/'or' operators to refine your criteria.<br />The IaC scan API checks each severity violation number separately against scan results and applies the operator to each evaluation.<br />The scan triggers a failure if the number of violations is greater than or equal to the failureCriteria values.<br />The Pipeline will be set the Failed if the failure criteria matches. |
-| scan_path<br />Default: `'./'`                                         | Path of the directory containing the IaC files.<br />The path is relative to the repository root. |
-| variables                                                              | Template variables in comma separate key:value pairs.<br />Eg: `'k1:v1,k2:v2'` |
-| variable_files                                                         | Comma separated list of variable file paths.<br />Paths are relative to the repository root.<br />Eg: `'./var1.json,./var2.json'` |
-| create_issue<br />Default: `'false'`                                   | If turned on an Issue will be created with the scan report.<br />Note: Only created on scan failure. |
-| create_pull_request_check<br />Default: `'false'`                      | If turned on a Check on Pull Request will be created with the scan report. |
-| create_pull_request_comment<br />Default: `'false'`                    | If turned on a Comment on the Pull Request will be created with the scan report. |
+| asset_name<br />*Required*                                             | Can be a project name or any identifier you want to attach to the scan.<br />Some examples are a CI/CD project name or a Git repository name.<br />Eg: `my-repo-name` |
+| template_type<br />*Required*                                          | Specify the template type.<br />Valid values are as follows:<br />`TF` for Terraform<br />`CFT` for AWS CloudFormation<br />`K8S` for Kubernetes |
+| template_version                                                       | Specify the template version.<br />Valid values are: `0.11`, `0.12` and `0.13`<br />Note: Only used for 'TF' templateType. |
+| tags                                                                   | Prisma Cloud tags are different from cloud tags that you might have included in your IaC templates.<br />Prisma Cloud tags will facilitate use of upcoming Prisma Cloud features like role-based access control and policy selection.<br />Eg: `owner:johndoe,team:creditapp,env:dev` |
+| failure_criteria<br />Default: `High:1,Medium:1,Low:1,Operator:or`   | Enables you to evaluate scan results against set failure criteria to obtain failed or passed verdicts. You can set the count for high, medium, and low severity issues and use `and`/`or` operators to refine your criteria.<br />The IaC scan API checks each severity violation number separately against scan results and applies the operator to each evaluation.<br />The scan triggers a failure if the number of violations is greater than or equal to the failureCriteria values.<br />The Pipeline will be set the Failed if the failure criteria matches. |
+| scan_path<br />Default: `./`                                         | Path of the directory containing the IaC files.<br />The path is relative to the repository root. |
+| variables                                                              | Template variables in comma separate key:value pairs.<br />Eg: `k1:v1,k2:v2` |
+| variable_files                                                         | Comma separated list of variable file paths.<br />Paths are relative to the repository root.<br />Eg: `./var1.json,./var2.json` |
+| create_issue<br />Default: `false`                                   | If turned on an Issue will be created with the scan report.<br />Note: Only created on scan failure. |
+| create_pull_request_check<br />Default: `false`                      | If turned on a Check on Pull Request will be created with the scan report. |
+| create_pull_request_comment<br />Default: `false`                    | If turned on a Comment on the Pull Request will be created with the scan report. |
 | github_token<br />Default: `${{ github.token }}`<br />Required if any of the above `create*` are turned on | The GitHub Token.<br />You can choose to use a different token than the pipeline default `GITHUB_TOKEN`.<br />Eg: `${{ secrets.GITHUB_TOKEN }}` |
-| result_path<br />Default: `'./prismacloud_iac'`                        | Path for the directory where result files should be written |
-| ignore_ssl<br />Default: `'false'`                                     | Should internal API client ignore SSL errors.<br />Useful when using on GitHub Enterprise On-Prem. |
+| result_path<br />Default: `./prismacloud_iac`                        | Path for the directory where result files should be written |
+| ignore_ssl<br />Default: `false`                                     | Should internal API client ignore SSL errors.<br />Useful when using on GitHub Enterprise On-Prem. |
 
 #### Scan outputs
 
