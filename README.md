@@ -82,9 +82,9 @@ jobs:
 ##### Step outputs
 | Config Key                      | Description |
 | ------------------------------- | ----------- |
-| iac_scan_result                 | Overall result of the scan.<br />Can be one of:<br />  1. passed - When either no issues were found or the Failure Criteria threshold was not reached<br />  2. failed - When issues were found and the Failure Criteria threshold for was reached<br />  3. error - When there was a scan execution error, generally due to misconfiguration or invalid templates |
+| iac_scan_result                 | Overall result of the scan. Can be one of:<br/>1. `passed` - either no issues were found or the Failure Criteria threshold was not reached<br/>2. `failed` - issues were found and the Failure Criteria threshold for was reached<br />  3. `error` - there was a scan execution error, generally due to misconfiguration or invalid templates |
 | iac_scan_result_summary         | Summary describing the result of the scan   |
-| iac_scan_result_path            | Path for the directory where result files are be written |
+| iac_scan_result_path            | Path for the directory where result files were written |
 | iac_scan_result_issues_csv_path | Path for the detailed Issue result CSV file |
 | iac_scan_result_errors_csv_path | Path for the detailed Error result CSV file |
 | iac_scan_result_sarif_path      | Path for the detailed result SARIF Log file |
@@ -92,7 +92,7 @@ jobs:
 
 ##### Files written to workspace
 
-All paths are relative the workspace root. The base path `./prismacloud_iac` is configurable via `result_path` option.
+All paths are relative the workspace root. The base path `./prismacloud_iac` is configurable via the `result_path` option.
 
 | File                           | Description                     |
 | ------------------------------ | ------------------------------- |
