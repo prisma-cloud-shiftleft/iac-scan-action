@@ -2,19 +2,19 @@
 
 ## Description
 
-A GitHub Action which runs the Prisma Cloud IaC Scan on the Infrastructure as Code files present in the repository to check for security issues. The action can be configured to report the result as an issue, pull request comment and pull request check, or can be viewed on the pipeline annotations.
+A GitHub Action that checks for security issues using the Prisma Cloud Infrastructe as Code Scan on the IaC files present in the repository. This action can give you results as an issue, pull request comment and pull request check, or can be viewed on the pipeline annotations.
 
 ## Setup
 
 #### Step 1: Acquire Prisma Cloud API credentials
 
-In order to run the scan the action needs the Prisma Cloud Access Key and Secret Key.
+In order to run the scan the action needs a Prisma Cloud Access Key and Secret Key.
 
 If you do not have a key, refer to [Create and Manage Access Keys](https://docs.paloaltonetworks.com/prisma/prisma-cloud/prisma-cloud-admin/manage-prisma-cloud-administrators/create-access-keys.html) to acquire one.
 
 #### Step 2: Create GitHub secrets from the API credentials
 
-Create two GitHub Secrets called "PRISMA_CLOUD_ACCESS_KEY" and "PRISMA_CLOUD_SECRET_KEY" for the Access Key and Secret Key respectively with the values acquired in Step 1.
+Create GitHub Secrets called "PRISMA_CLOUD_ACCESS_KEY" and "PRISMA_CLOUD_SECRET_KEY" for the Access Key and Secret Key respectively with the values acquired in Step 1.
 
 Refer to [Encrypted secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets) for more details on how to setup secrets.
 
@@ -22,7 +22,7 @@ Refer to [Encrypted secrets](https://docs.github.com/en/free-pro-team@latest/act
 
 Configure your workflow based on the following example.
 
-Note: `actions/checkout` step is required to be run before the scan action, otherwise the action does not have access to the CFT files to be scanned.
+Note: the `actions/checkout` step is required to run before the scan action, otherwise the action does not have access to the IaC files to be scanned.
 
 ```yaml
 name: Prisma Cloud IaC Scan Example
@@ -35,7 +35,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Run Scan on CFT files in the repository
+      - name: Run Scan on IaC files in the repository
         uses: prisma-cloud-shiftleft/iac-scan-action@v1
         id: iac-scan
         with:
@@ -103,7 +103,7 @@ All paths are relative the workspace root. The base path `./prismacloud_iac` is 
 
 #### SARIF upload
 
-When scan finds issues the action will always write the report in SARIF Log format in the workspace.
+When a scan finds issues the action will always write the report in SARIF Log format in the workspace.
 
 ```yaml
 name: Prisma Cloud IaC Scan Example
