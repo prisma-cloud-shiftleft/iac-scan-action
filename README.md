@@ -2,13 +2,13 @@
 
 ## Description
 
-A GitHub Action that checks for security issues using the Prisma Cloud Infrastructe as Code Scan on the IaC files present in the repository. This action can give you results as an issue, pull request comment and pull request check, or can be viewed on the pipeline annotations.
+A GitHub Action checks for security issues using the Prisma Cloud Infrastructure as Code Scan on the IaC files present in the repository. This action can give you results as an issue, pull request comment and pull request check, or can be viewed as pipeline annotations.
 
 ## Setup
 
 #### Step 1: Acquire Prisma Cloud API credentials
 
-In order to run the scan the action needs a Prisma Cloud Access Key and Secret Key.
+To run the scan, the action needs a Prisma Cloud Access Key and Secret Key.
 
 If you do not have a key, refer to [Create and Manage Access Keys](https://docs.paloaltonetworks.com/prisma/prisma-cloud/prisma-cloud-admin/manage-prisma-cloud-administrators/create-access-keys.html) to acquire one.
 
