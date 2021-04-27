@@ -180,7 +180,6 @@ async function initAndScan() {
       if (tokenMissing) {
         core.warning('Without githubToken scan cannot be restricted to Pull Request changed files')
       } else {
-        core.info('calling listFiles')
         const files = await octokit.pulls.listFiles({
           pull_number: github.context.issue.number,
           owner: owner,
