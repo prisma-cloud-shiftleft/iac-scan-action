@@ -75,6 +75,14 @@ inputs:
     description: |-
       Path of the directory containing the IaC files.
       The path is relative to the repository root.
+  use_scan_path_when_pr:
+    required: false
+    default: "false"
+    description: |-
+      Specifies if files in scan_path should be scanned in context of a PR,
+      not only changed files.  Otherwise, only files changed in context of PR
+      are scanned, which includes files outside of scan_path and excludes
+      unchanged files in scan_path.  Default is false.
   template_type:
     required: true
     description: |-

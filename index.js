@@ -56,6 +56,7 @@ async function initAndScan() {
     const failureCriteriaInput = core.getInput('failure_criteria');
     const variablesInput = core.getInput('variables');
     const variableFilesInput = core.getInput('variable_files');
+    const useScanPathWhenPr = core.getInput('use_scan_path_when_pr') == 'true'
     let workspaceDir = github.context.workspace
     if (typeof workspaceDir === 'undefined' || workspaceDir == null) {
       workspaceDir = env.GITHUB_WORKSPACE
@@ -175,7 +176,7 @@ async function initAndScan() {
     }
 
     // get modified files 
-    if (is_pr) {
+    if (is_pr && !useScanPathWhenPr) {
       if (tokenMissing) {
         core.warning('Without githubToken scan cannot be restricted to Pull Request changed files')
       } else {
