@@ -14,7 +14,7 @@ If you do not have a key, refer to [Create and Manage Access Keys](https://docs.
 
 #### Step 2: Create GitHub secrets from the API credentials
 
-Create GitHub Secrets called `PRISMA_CLOUD_ACCESS_KEY` and `PRISMA_CLOUD_SECRET_KEY` for the Access Key and Secret Key respectively with the values acquired in Step 1.
+Create GitHub Secrets called `PCC_USER`, `PCE_CONSOLE_URL` and `PCC_PASS` for the Access Key, Secret Key, and Prisma Cloud Enterprise API Url respectively with the values acquired in Step 1. (Documentation for the correct api urls are located [here](https://prisma.pan.dev/api/cloud/api-urls)).
 
 Refer to [Encrypted secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets) for more details on how to setup secrets.
 
@@ -39,9 +39,9 @@ jobs:
         uses: prisma-cloud-shiftleft/iac-scan-action@v1
         id: iac-scan
         with:
-          prisma_api_url: 'https://api.prismacloud.io'
-          access_key: ${{ secrets.PRISMA_CLOUD_ACCESS_KEY }}
-          secret_key: ${{ secrets.PRISMA_CLOUD_SECRET_KEY }}
+          prisma_api_url: ${{ secrets.PCE_CONSOLE_URL }}          
+          access_key: ${{ secrets.PCC_USER }}
+          secret_key: ${{ secrets.PCC_PASS }}
           asset_name: 'my-asset-name'
           template_type: 'TF'
           template_version: '0.13'
@@ -59,7 +59,7 @@ jobs:
 
 | Config Key                                                             | Description |
 | ---------------------------------------------------------------------- | ----------- |
-| prisma_api_url<br />*Required*                                         | The URL for Prisma Cloud varies depending on the region and cluster on which your tenant is deployed.<br />If your tenant is, for example, https://app2.prismacloud.io or https://app.eu.prismacloud.io then replace **app** in the URL with **api** and enter it here. Refer to the [Prisma Cloud REST API Reference](https://api.docs.prismacloud.io/reference#try-the-apis) for more details. |
+| prisma_api_url<br />*Required*                                         | The URL for Prisma Cloud varies depending on the region and cluster on which your tenant is deployed.<br />If your tenant is, for example, https://app2.prismacloud.io or https://app.eu.prismacloud.io then replace **app** in the URL with **api** and enter it here. Refer to the [Prisma Cloud REST API Reference](https://docs.paloaltonetworks.com/prisma/prisma-cloud/prisma-cloud-admin/manage-prisma-cloud-administrators/create-access-keys.html) for more details. |
 | access_key<br />*Required*                                             | Refer to [Create and Manage Access Keys](https://docs.paloaltonetworks.com/prisma/prisma-cloud/prisma-cloud-admin/manage-prisma-cloud-administrators/create-access-keys.html) to acquire Acccess and Secret keys.<br />We recommend the actual value to be stored as a GitHub Secret and used here in the Action with `${{ secrets.PRISMA_CLOUD_ACCESS_KEY }}` |
 | secret_key<br />*Required*                                             | The secret key is provided to you at the time of Access Key generation.<br />You cannot acquire it post generation.<br />We recommend the actual value to be stored as a GitHub Secret and used here in the Action with `${{ secrets.PRISMA_CLOUD_SECRET_KEY }}` |
 | asset_name<br />*Required*                                             | Can be a project name or any identifier you want to attach to the scan.<br />Some examples are a CI/CD project name or a Git repository name.<br />Eg: `my-repo-name` |
@@ -121,9 +121,9 @@ jobs:
         uses: prisma-cloud-shiftleft/iac-scan-action@v1
         id: iac-scan
         with:
-          prisma_api_url: 'https://api.prismacloud.io'
-          access_key: ${{ secrets.PRISMA_CLOUD_ACCESS_KEY }}
-          secret_key: ${{ secrets.PRISMA_CLOUD_SECRET_KEY }}
+          prisma_api_url: ${{ secrets.PCE_CONSOLE_URL }}   
+          access_key: ${{ secrets.PCC_USER }}
+          secret_key: ${{ secrets.PCC_PASS }}
           asset_name: 'my-asset-name'
           template_type: 'CFT'
       - name: Upload SARIF file
