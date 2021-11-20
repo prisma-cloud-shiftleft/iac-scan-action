@@ -84,6 +84,7 @@ async function initAndScan() {
     let uploadPath = checkoutPath
     if (uploadScanPathOnly) {
       uploadPath = checkoutPath + '/' + scanPath
+      scanPath = ''
     }
 
     let resultDir = core.getInput('result_path');
