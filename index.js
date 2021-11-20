@@ -57,6 +57,7 @@ async function initAndScan() {
     const variablesInput = core.getInput('variables');
     const variableFilesInput = core.getInput('variable_files');
     const useScanPathWhenPr = core.getInput('use_scan_path_when_pr') == 'true'
+    const uploadScanPathOnly = core.getInput('upload_scan_path_only') == 'true'
     let workspaceDir = github.context.workspace
     if (typeof workspaceDir === 'undefined' || workspaceDir == null) {
       workspaceDir = env.GITHUB_WORKSPACE
@@ -80,6 +81,11 @@ async function initAndScan() {
     if (!fs.existsSync(checkoutPath + '/' + scanPath)) {
       throw "No file found at provided scan_path '" + scanPath + "'";
     }
+    let uploadPath = checkoutPath
+    if (uploadScanPathOnly) {
+      uploadPath = checkoutPath + '/' + scanPath
+    }
+
     let resultDir = core.getInput('result_path');
     if (resultDir.startsWith('./')) {
       resultDir = resultDir.substring(2);
@@ -172,6 +178,7 @@ async function initAndScan() {
       workspaceDir: workspaceDir,
       resultDir: resultDir,
       checkoutPath: checkoutPath,
+      uploadPath: uploadPath,
       zipName: 'scan-input.zip'
     }
 
@@ -227,8 +234,8 @@ async function initAndScan() {
 }
 
 async function scan(scanCtx) {
-  core.info('Creating zip file in: ' + scanCtx.checkoutPath)
-  await zip(scanCtx.checkoutPath, scanCtx.zipName)
+  core.info('Creating zip file in: ' + scanCtx.uploadPath)
+  await zip(scanCtx.uploadPath, scanCtx.zipName)
   
   core.info('Starting scan...')
   const scanInitResult = await initScan(scanCtx)

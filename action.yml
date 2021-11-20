@@ -83,6 +83,15 @@ inputs:
       not only changed files.  Otherwise, only files changed in context of PR
       are scanned, which includes files outside of scan_path and excludes
       unchanged files in scan_path.  Default is false.
+  upload_scan_path_only:
+    required: false
+    default: "false"
+    description: |-
+      Specifies if only files in scan_path should be uploaded to be scanned.
+      By default the entire GitHub workspace directory is zipped and uploaded.
+      This option may be necessary if there are other files in the workspace 
+      directory besides IaC template files.  Too many files may cause the 
+      action to timeout.
   template_type:
     required: true
     description: |-
