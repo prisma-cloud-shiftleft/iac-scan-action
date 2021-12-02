@@ -29,7 +29,7 @@ async function initAndScan() {
     const createIssue = core.getInput('create_issue', { required: true }) == 'true'
     const createPrCheck = core.getInput('create_pull_request_check', { required: true }) == 'true'
     const createPrComment = core.getInput('create_pull_request_comment', { required: true }) == 'true'
-
+    
     let githubToken = core.getInput('github_token')
     const tokenMissing = (typeof githubToken === 'undefined' || githubToken == null || githubToken.length < 1)
 
@@ -106,7 +106,7 @@ async function initAndScan() {
     if (SUPPORTED_TEMPLATE_TYPES.indexOf(templateType) < 0) {
       throw "Invalid template_type. Found: '" + templateType + "'. Expected: one of 'TF', 'CFT', 'K8S' ]";
     }
-
+    
     const failureCriteria = {
       high: 1,
       medium: 1,
@@ -173,7 +173,7 @@ async function initAndScan() {
         templateVersion: templateVersion,
         variables: variables,
         variableFiles: variableFiles,
-        folders: [scanPath]
+        folders: [ scanPath ]
       },
       tags: tags,
       workspaceDir: workspaceDir,
@@ -194,11 +194,11 @@ async function initAndScan() {
           repo: repo
         });
         if (files.data) {
-          scanCtx.scanParams.files = files.data.map(function (d) { return d.filename })
+          scanCtx.scanParams.files = files.data.map(function(d) { return d.filename })
         }
       }
     }
-
+    
     const http = new httpclient.HttpClient(USER_AGENT, [], { ignoreSslError: ignoreSsl });
     scanCtx.http = http;
     const scanResult = await scan(scanCtx);
@@ -229,7 +229,7 @@ async function initAndScan() {
         }
       }
     }
-  } catch (error) {
+  } catch (error) {    
     core.setFailed('Prisma Cloud IaC Scan - Error occured while scanning: ' + (error instanceof Error ? error.toString() : error));
   }
 }
@@ -237,13 +237,13 @@ async function initAndScan() {
 async function scan(scanCtx) {
   core.info('Creating zip file in: ' + scanCtx.checkoutPath)
   await zip(scanCtx.uploadPath, scanCtx.zipName)
-
+  
   core.info('Starting scan...')
   const scanInitResult = await initScan(scanCtx)
   if (scanInitResult.failed) {
     return scanInitResult
   }
-
+  
   const initResult = scanInitResult.result
   core.info('Scan initiated. ScanID: ' + initResult.scanId)
 
@@ -267,7 +267,7 @@ async function scan(scanCtx) {
   if (statusResult.failed) {
     return statusResult
   }
-
+  
   core.info('Scan complete. Fetching result...')
 
   const scanResult = await getResult(scanCtx, initResult.scanId)
@@ -442,7 +442,7 @@ async function initScan(scanCtx) {
   } catch (error) {
     core.error('error : ' + JSON.stringify(error, null, 2));
     if (typeof error.result === 'undefined' || error.result == null
-      || typeof error.result.errors === 'undefined' || error.result.errors == null) {
+        || typeof error.result.errors === 'undefined' || error.result.errors == null) {
       let message = error.name
       if (typeof error.statusCode !== 'undefined' && error.statusCode != null) {
         message = message + ' : ' + error.statusCode;
@@ -511,10 +511,10 @@ async function uploadFile(http, s3Url, zipName) {
 async function triggerScan(scanCtx, initResult) {
   let vars = {};
   let varFiles = [];
-
+  
   if (typeof scanCtx.configYml !== 'undefined' && scanCtx.configYml != null
-    && scanCtx.configYml.template_parameters !== 'undefined'
-    && scanCtx.configYml.template_parameters != null) {
+      && scanCtx.configYml.template_parameters !== 'undefined'
+      && scanCtx.configYml.template_parameters != null) {
     const configVars = scanCtx.configYml.template_parameters.variables;
     const configVarFiles = scanCtx.configYml.template_parameters.variableFiles;
     if (typeof configVars !== 'undefined' && configVars != null && Object.keys(configVars).length > 0) {
@@ -566,7 +566,7 @@ async function triggerScan(scanCtx, initResult) {
       }
     );
     if (typeof response.result !== 'undefined' && response.result != null
-      && typeof response.result.errors !== 'undefined' && response.result.errors != null) {
+        && typeof response.result.errors !== 'undefined' && response.result.errors != null) {
       return {
         result: null,
         failed: true,
@@ -587,7 +587,7 @@ async function triggerScan(scanCtx, initResult) {
   } catch (error) {
     core.error('error : ' + JSON.stringify(error, null, 2));
     if (typeof error.result === 'undefined' || error.result == null
-      || typeof error.result.errors === 'undefined' || error.result.errors == null) {
+        || typeof error.result.errors === 'undefined' || error.result.errors == null) {
       let message = error.name
       if (typeof error.statusCode !== 'undefined' && error.statusCode != null) {
         message = message + ' : ' + error.statusCode;
@@ -686,7 +686,7 @@ async function awaitScanCompletion(scanCtx, scanId) {
     } catch (error) {
       core.error('error : ' + JSON.stringify(error, null, 2));
       if (typeof error.result === 'undefined' || error.result == null
-        || typeof error.result.errors === 'undefined' || error.result.errors == null) {
+          || typeof error.result.errors === 'undefined' || error.result.errors == null) {
         let message = error.name
         if (typeof error.statusCode !== 'undefined' && error.statusCode != null) {
           message = message + ' : ' + error.statusCode;
@@ -741,7 +741,7 @@ async function getResult(scanCtx, scanId) {
       }
     );
     if (typeof response.result !== 'undefined' && response.result != null
-      && typeof response.result.errors !== 'undefined' && response.result.errors != null) {
+        && typeof response.result.errors !== 'undefined' && response.result.errors != null) {
       return {
         result: null,
         failed: true,
@@ -762,7 +762,7 @@ async function getResult(scanCtx, scanId) {
   } catch (error) {
     core.error('error : ' + JSON.stringify(error, null, 2));
     if (typeof error.result === 'undefined' || error.result == null
-      || typeof error.result.errors === 'undefined' || error.result.errors == null) {
+        || typeof error.result.errors === 'undefined' || error.result.errors == null) {
       let message = error.name
       if (typeof error.statusCode !== 'undefined' && error.statusCode != null) {
         message = message + ' : ' + error.statusCode;
@@ -814,7 +814,7 @@ async function getSarifResult(scanCtx, scanId) {
       }
     );
     if (typeof response.result !== 'undefined' && response.result != null
-      && typeof response.result.errors !== 'undefined' && response.result.errors != null) {
+        && typeof response.result.errors !== 'undefined' && response.result.errors != null) {
       return {
         result: null,
         failed: true,
@@ -835,7 +835,7 @@ async function getSarifResult(scanCtx, scanId) {
   } catch (error) {
     core.error('error : ' + JSON.stringify(error, null, 2));
     if (typeof error.result === 'undefined' || error.result == null
-      || typeof error.result.errors === 'undefined' || error.result.errors == null) {
+        || typeof error.result.errors === 'undefined' || error.result.errors == null) {
       let message = error.name
       if (typeof error.statusCode !== 'undefined' && error.statusCode != null) {
         message = message + ' : ' + error.statusCode;
@@ -891,7 +891,7 @@ async function createGhIssue(octokit, owner, repo, assignee, is_pr, outcome, tot
   return await octokit.issues.create({
     owner: owner,
     repo: repo,
-    assignees: [assignee],
+    assignees: [ assignee ],
     title: title,
     body: bodyMd
   })
@@ -962,14 +962,14 @@ async function generateOutput(scanCtx, scanStatus, result) {
         lowCount++
       }
     }
-
+  
     issues.sort(function (a, b) {
       let r = 0
       if (typeof a.severity !== 'undefined' && b.severity !== 'undefined') {
         r = SORT_ORDER.indexOf(a.severity) - SORT_ORDER.indexOf(b.severity)
       }
       if (r == 0 && typeof a.files !== 'undefined' && b.files !== 'undefined'
-        && typeof a.files.length !== 'undefined' && b.files.length !== 'undefined') {
+          && typeof a.files.length !== 'undefined' && b.files.length !== 'undefined') {
         r = b.files.length - a.files.length
       }
       if (r == 0 && typeof a.title !== 'undefined' && b.title !== 'undefined') {
@@ -985,7 +985,7 @@ async function generateOutput(scanCtx, scanStatus, result) {
   let issuesSnippetLog = ''
   if (issueCount > 0) {
     let issueSnippetSuffix = ' with Severity High: ' + highCount
-      + ', Medium: ' + medCount + ', Low: ' + lowCount
+        + ', Medium: ' + medCount + ', Low: ' + lowCount
     issuesSnippetMd = 'has found **' + issueCount + ' issues**' + issueSnippetSuffix
     issuesSnippetLog = 'has found ' + issueCount + ' issues' + issueSnippetSuffix
   } else {
@@ -1001,10 +1001,10 @@ async function generateOutput(scanCtx, scanStatus, result) {
   let resultLog = 'Prisma Cloud IaC scan status: ' + capitalizeFirstLetter(scanStatus) + '.';
   if (issueCount > 0) {
     resultLog += ' Scan ' + issuesSnippetLog + '. Scan ' + scanStatus.toUpperCase()
-      + ' as per the configured failure criteria High: ' + scanCtx.failureCriteria.high
-      + ', Medium: ' + scanCtx.failureCriteria.medium
-      + ', Low:  ' + scanCtx.failureCriteria.low
-      + ', Operator: ' + operator + '.';
+    + ' as per the configured failure criteria High: ' + scanCtx.failureCriteria.high
+    + ', Medium: ' + scanCtx.failureCriteria.medium
+    + ', Low:  ' + scanCtx.failureCriteria.low
+    + ', Operator: ' + operator + '.';
   }
 
   if (issueCount > 0) {
@@ -1054,7 +1054,7 @@ async function generateOutput(scanCtx, scanStatus, result) {
     }
     if (!outcomePassed && scanCtx.createIssue) {
       const issue = await createGhIssue(scanCtx.octokit, scanCtx.owner, scanCtx.repo,
-        scanCtx.is_pr ? github.context.actor : scanCtx.owner, scanCtx.is_pr, scanStatus, issueCount, resultMd)
+          scanCtx.is_pr ? github.context.actor : scanCtx.owner, scanCtx.is_pr, scanStatus, issueCount, resultMd)
       core.info('Created Issue: ' + issue.data.html_url)
     }
   }
@@ -1113,7 +1113,7 @@ async function generateIssues(scanCtx, result) {
 async function generateError(scanCtx, errors) {
   if (errors != null && errors.length > 0) {
     const errorStr = 'Prisma Cloud IaC Scan - Scan reported ' + errors.length + ' errors.';
-    let header = ['Error Status', 'Error Message'];
+    let header = ['Error Status','Error Message'];
     let mdtableInput = [header]
     let csvRows = []
     for (let i = 0; i < errors.length; i++) {
@@ -1121,19 +1121,19 @@ async function generateError(scanCtx, errors) {
       let message = e.message
       let messageLines = message.split('\n')
       for (let j = 0; j < messageLines.length; j++) {
-        let line = messageLines[j];
-        if (line == null) {
-          continue;
-        }
-        line = line.trim();
-        if (line.length < 1) {
-          continue;
-        }
-        if (j > 0) {
-          mdtableInput.push([' ', line])
-        } else {
-          mdtableInput.push([e.status, line])
-        }
+          let line = messageLines[j];
+          if (line == null) {
+            continue;
+          }
+          line = line.trim();
+          if (line.length < 1) {
+            continue;
+          }
+          if (j > 0) {
+            mdtableInput.push([' ', line])
+          } else {
+            mdtableInput.push([e.status, line])
+          }
       }
       csvRows.push([e.status, messageLines.join('. ')])
     }
@@ -1164,7 +1164,7 @@ async function getTags(scanCtx) {
         if (typeof config.tags !== 'undefined' && config.tags != null) {
           const configTags = config.tags;
           if (Array.isArray(configTags)) {
-            for (let i = 0; i < configTags.length; i++) {
+            for(let i = 0; i < configTags.length; i++) {
               var keyValue = configTags[i].split(':');
               newTags[keyValue[0].trim()] = keyValue[1].trim();
             }
