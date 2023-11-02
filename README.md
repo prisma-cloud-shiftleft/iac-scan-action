@@ -1,6 +1,6 @@
 # Prisma Cloud IaC Scan Action
 
-# This project has been deprecated in favor of newer capabilities documented here: https://docs.prismacloud.io/en/enterprise-edition/content-collections/application-security/get-started/connect-code-and-build-providers/ci-cd-systems/ci-cd-systems
+# This project has been deprecated in favor of newer capabilities documented here: https://github.com/bridgecrewio/checkov-action
 
 ## Description
 
