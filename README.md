@@ -1,5 +1,7 @@
 # Prisma Cloud IaC Scan Action
 
+# This project has been deprecated in favor of newer capabilities documented here: https://docs.prismacloud.io/en/enterprise-edition/content-collections/application-security/get-started/connect-code-and-build-providers/ci-cd-systems/ci-cd-systems
+
 ## Description
 
 A GitHub Action checks for security issues using the Prisma Cloud Infrastructure as Code Scan on the IaC files present in the repository. This action can give you results as an issue, pull request comment and pull request check, or can be viewed as pipeline annotations.
